@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crypto"
         mc:Ignorable="d"
-        Title="Crypto" Height="450" Width="600">
+        Title="Crypto" Height="450" Width="600" Style="{DynamicResource WindowStyle}">
     <Grid Margin="10">
         <TabControl>
             <TabItem Header="Проверка хэша">
@@ -23,14 +23,20 @@
 
                     <TextBlock Grid.Row="0" Text="Выберите файл:" Margin="0,0,0,5"/>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <TextBox x:Name="txtFilePath" Width="400" Margin="0,0,5,0" IsReadOnly="True"/>
+                        <TextBox x:Name="txtFilePath" Width="400" Margin="0,0,5,0" IsReadOnly="True" 
+                                 AllowDrop="True" PreviewDragOver="txtFilePath_PreviewDragOver"
+                                 PreviewDragLeave="txtFilePath_PreviewDragLeave" Drop="txtFilePath_Drop"
+                                 Text="Перетащите сюда файл.."/>
                         <Button Content="Обзор..." Click="Browse_Click" Width="80"/>
                     </StackPanel>
 
                     <TextBlock Grid.Row="2" Text="Список алгоритмов хэширования:" Margin="0,10,0,5"/>
                     <ComboBox Grid.Row="3" x:Name="HashAlgorithmBox" Margin="0,0,0,10" Width="200" HorizontalAlignment="Left">
-                        <ComboBoxItem Content="SHA1" Tag="SHA1" IsSelected="True"/>
+                        <ComboBoxItem Content="MD5" IsSelected="True"/>
+                        <ComboBoxItem Content="SHA1"/>
                         <ComboBoxItem Content="SHA256"/>
+                        <ComboBoxItem Content="SHA384"/>
+                        <ComboBoxItem Content="SHA512"/>
                     </ComboBox>
                     <Button Grid.Row="3" x:Name="CalculateHash" Width="180" Height="25" Margin="55,0,0,10" Content="Вычислить хэш" Click="CalculateHash_Click"/>
 
@@ -58,6 +64,27 @@
                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                              TextWrapping="Wrap" Background="White"/>
                     <TextBlock Grid.Row="7" x:Name="txtfileStatus" Margin="0,5,0,0" HorizontalAlignment="Left" Text="Ожидание..."/>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Настройки">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock x:Name="ThemeTxt" Text="light" Width="Auto" Margin="0,0,10,0"/>
+                        <Button x:Name="ThemeSwitch" Click="ThemeSwitch_Click" Content="Сменить тему" Height="20" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Vertical" Margin="5,5">
+                        <Button Content="Добавить в контекстное меню" Click="AddToContextMenu_Click" Margin="0,0,0,5"/>
+                        <Button Content="Удалить из контекстного меню" Click="RemoveFromContextMenu_Click"/>
+                        <TextBlock x:Name="contextMenuStatusText" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
