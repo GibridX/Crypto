@@ -9,9 +9,6 @@ using System.Windows.Media;
 
 namespace Crypto
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public event Action<int> ProgressChanged = delegate { };
@@ -36,7 +33,6 @@ namespace Crypto
             StatusUpdated += (status) => Dispatcher.Invoke(() => txtfileStatus.Text = status);
             txtUserHash.IsEnabled = false;
             CompareButton.IsEnabled = false;
-            UpdateContextMenuStatus();
         }
 
         #region UI/UX элементы
@@ -70,32 +66,6 @@ namespace Crypto
                     txtFilePath.Text = files[0];
                 }
             }
-        }
-
-        private void AddToContextMenu_Click(object sender, RoutedEventArgs e)
-        {
-            if(ContextMenuManager.AddContextMenuForCurrentUser())
-            {
-                MessageBox.Show("Приложение добавлено в контекстное меню", "Успех", 
-                    MessageBoxButton.OK, MessageBoxImage.Information);
-                UpdateContextMenuStatus();
-            }
-        }
-
-        private void RemoveFromContextMenu_Click(object sender, RoutedEventArgs e)
-        {
-            if(ContextMenuManager.RemoveContextMenuEntry())
-            {
-                MessageBox.Show("Приложение удалено из контекстного меню", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            UpdateContextMenuStatus();
-        }
-
-        private void UpdateContextMenuStatus()
-        {
-            contextMenuStatusText.Text = ContextMenuManager.IsContextMenuInstalled()
-                ? "Контекстное меню: установлено"
-                : "Контекстное меню: не установлено";
         }
 
         #endregion
@@ -270,7 +240,7 @@ namespace Crypto
                     }
                 }
 
-                hashAlgorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+                hashAlgorithm.TransformFinalBlock([], 0, 0);
                 byte[] hashBytes = hashAlgorithm.Hash ?? throw new InvalidOperationException("Не удалось вычислить хэш");
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
             }
